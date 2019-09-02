@@ -15,7 +15,7 @@ export function* signIn({payload}) {
 
     if (user.provider) {
       Alert.alert('Erro no login', 'Prestador de serviço não é permitido');
-      throw new Error();
+      return;
     }
 
     yield put(signInSuccess(token, user));

@@ -1,5 +1,8 @@
-import React, {useRef} from 'react';
+import React, {useRef, useState} from 'react';
 import {Image} from 'react-native';
+import {useDispatch, useSelector} from 'react-redux';
+
+import {signUpRequest} from '../../store/modules/auth/actions';
 
 import logo from '../../assets/logo.png';
 
@@ -17,8 +20,20 @@ import {
 export default function SignUp({navigation}) {
   const emailRef = useRef();
   const passwordRef = useRef();
+  const passwordConfirmationRef = useRef();
 
-  function handleSubmit() {}
+  const dispatch = useDispatch();
+
+  const [name, setName] = useState();
+  const [email, setEmail] = useState();
+  const [password, setPassword] = useState();
+  const [passwordConfirmation, setPasswordConfirmation] = useState();
+
+  const {loading} = useSelector(state => state.auth);
+
+  function handleSubmit() {
+    dispatch(signUpRequest(name, email, password, passwordConfirmation));
+  }
 
   return (
     <Background>
@@ -27,15 +42,18 @@ export default function SignUp({navigation}) {
 
         <Form>
           <FormInput
+            value={name}
+            onChangeText={setName}
             icon="person-outline"
             autoCorrect={false}
-            autoCapitalize="none"
             placeholder="Nome completo"
             returnKeyType="next"
             onSubmitEditing={() => emailRef.current.focus()}
           />
 
           <FormInput
+            value={email}
+            onChangeText={setEmail}
             icon="mail-outline"
             keyboardType="email-address"
             autoCorrect={false}
@@ -47,15 +65,30 @@ export default function SignUp({navigation}) {
           />
 
           <FormInput
+            value={password}
+            onChangeText={setPassword}
             icon="lock-outline"
             secureTextEntry
             placeholder="Senha secreta"
             ref={passwordRef}
+            returnKeyType="next"
+            onSubmitEditing={() => passwordConfirmationRef.current.focus()}
+          />
+
+          <FormInput
+            value={passwordConfirmation}
+            onChangeText={setPasswordConfirmation}
+            icon="lock-outline"
+            secureTextEntry
+            placeholder="Confirmação da senha secreta"
+            ref={passwordConfirmationRef}
             returnKeyType="send"
             onSubmitEditing={handleSubmit}
           />
 
-          <SubmitButton onPress={() => {}}>Criar</SubmitButton>
+          <SubmitButton onPress={handleSubmit} loading={loading}>
+            Criar conta
+          </SubmitButton>
         </Form>
 
         <SignLink onPress={() => navigation.navigate('SignIn')}>

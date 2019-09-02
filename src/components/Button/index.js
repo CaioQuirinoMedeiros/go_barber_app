@@ -10,7 +10,7 @@ export default function Button({children, loading, ...rest}) {
       {loading ? (
         <ActivityIndicator size="small" color="#fff" />
       ) : (
-        <Text>children</Text>
+        <Text>{children}</Text>
       )}
     </Container>
   );

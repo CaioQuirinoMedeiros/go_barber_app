@@ -40,7 +40,6 @@ export function* signUp({payload}) {
       email,
       password,
       passwordConfirmation,
-      provider: true,
     });
 
     yield put(signUpSuccess());

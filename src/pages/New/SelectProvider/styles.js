@@ -8,19 +8,20 @@ export const Container = styled.View`
 export const ProvidersList = styled.FlatList.attrs({
   showsVerticalScrollIndicator: false,
   numColumns: 2,
+  columnWrapperStyle: {justifyContent: 'space-between'},
 })`
   margin-top: 70px;
-  padding: 0 20px;
+  padding: 0 5%;
 `;
 
 export const Provider = styled(RectButton)`
   background: #fff;
   border-radius: 4px;
   padding: 20px;
-  flex: 0.5;
+  width: 47.22%;
 
   align-items: center;
-  margin: 0 10px 20px;
+  margin: 0 0px 20px;
 `;
 
 export const Avatar = styled.Image`

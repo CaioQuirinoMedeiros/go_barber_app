@@ -1,16 +1,64 @@
-import React from 'react';
-import {View, Text} from 'react-native';
+import React, {useMemo} from 'react';
+import {TouchableOpacity} from 'react-native';
+import Icon from 'react-native-vector-icons/MaterialIcons';
+import {formatRelative, parseISO} from 'date-fns';
+import pt from 'date-fns/locale/pt';
 
-// import { Container } from './styles';
+import api from '../../../services/api';
+
+import Background from '../../../components/Background';
+
+import {Container, Avatar, Name, Time, SubmitButton} from './styles';
 
 export default function Confirm({navigation}) {
   const provider = navigation.getParam('provider');
   const time = navigation.getParam('time');
 
+  const dateFormatted = useMemo(
+    () => formatRelative(parseISO(time), new Date(), {locale: pt}),
+    [time],
+  );
+
+  async function handleAddAppointment() {
+    console.log('provider:', provider);
+    console.log('date:', time);
+    const response = await api.post('appointments', {
+      provider_id: provider.id,
+      date: time,
+    });
+
+    console.log(response);
+
+    navigation.navigate('Dashboard');
+  }
+
   return (
-    <View>
-      <Text>{provider.name}</Text>
-      <Text>{time}</Text>
-    </View>
+    <Background>
+      <Container>
+        <Avatar
+          source={{
+            uri: provider.avatar
+              ? provider.avatar.url
+              : `https://api.adorable.io/avatar/120/${provider.name}`,
+          }}
+        />
+
+        <Name>{provider.name}</Name>
+        <Time>{dateFormatted}</Time>
+
+        <SubmitButton onPress={handleAddAppointment}>
+          Confirmar Agendamento
+        </SubmitButton>
+      </Container>
+    </Background>
   );
 }
+
+Confirm.navigationOptions = ({navigation}) => ({
+  title: 'Confirmar agendamento',
+  headerLeft: () => (
+    <TouchableOpacity onPress={() => navigation.goBack()}>
+      <Icon name="chevron-left" size={22} color="#fff" />
+    </TouchableOpacity>
+  ),
+});

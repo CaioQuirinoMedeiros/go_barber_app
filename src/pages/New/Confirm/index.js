@@ -13,15 +13,16 @@ import {Container, Avatar, Name, Time, SubmitButton} from './styles';
 export default function Confirm({navigation}) {
   const provider = navigation.getParam('provider');
   const time = navigation.getParam('time');
+  console.tron.log('TIME', time);
 
   const dateFormatted = useMemo(
     () => formatRelative(parseISO(time), new Date(), {locale: pt}),
     [time],
   );
 
+  console.tron.log('dateFormatted', dateFormatted);
+
   async function handleAddAppointment() {
-    console.log('provider:', provider);
-    console.log('date:', time);
     const response = await api.post('appointments', {
       provider_id: provider.id,
       date: time,

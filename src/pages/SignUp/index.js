@@ -49,6 +49,7 @@ export default function SignUp({navigation}) {
             placeholder="Nome completo"
             returnKeyType="next"
             onSubmitEditing={() => emailRef.current.focus()}
+            blurOnSubmit={false}
           />
 
           <FormInput
@@ -62,6 +63,7 @@ export default function SignUp({navigation}) {
             ref={emailRef}
             returnKeyType="next"
             onSubmitEditing={() => passwordRef.current.focus()}
+            blurOnSubmit={false}
           />
 
           <FormInput
@@ -73,6 +75,7 @@ export default function SignUp({navigation}) {
             ref={passwordRef}
             returnKeyType="next"
             onSubmitEditing={() => passwordConfirmationRef.current.focus()}
+            blurOnSubmit={false}
           />
 
           <FormInput

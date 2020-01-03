@@ -37,3 +37,12 @@ export const Name = styled.Text`
   color: #333;
   text-align: center;
 `;
+
+export const Message = styled.Text`
+  font-weight: bold;
+  font-size: 22;
+  color: #fff;
+  opacity: 0.6;
+  text-align: center;
+  margin-top: 30;
+`;

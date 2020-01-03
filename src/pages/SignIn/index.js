@@ -27,7 +27,7 @@ export default function SignIn({navigation}) {
   const {loading} = useSelector(state => state.auth);
 
   function handleSubmit() {
-    console.log(email, password);
+    console.tron.log(email, password);
     dispatch(signInRequest(email, password));
   }
 
@@ -47,6 +47,7 @@ export default function SignIn({navigation}) {
             placeholder="Digite seu e-mail"
             returnKeyType="next"
             onSubmitEditing={() => passwordRef.current.focus()}
+            blurOnSubmit={false}
           />
 
           <FormInput

@@ -22,10 +22,7 @@ export function* signIn({payload}) {
 
     Alert.alert('Bem-vindo');
   } catch (err) {
-    Alert.alert(
-      'Falha de autenticação',
-      err.response.data.error || 'Falha na autenticação, verifique seus dados',
-    );
+    Alert.alert('Falha de autenticação', 'Verifique seus dados');
 
     yield put(signFailure());
   }
@@ -46,10 +43,7 @@ export function* signUp({payload}) {
 
     Alert.alert('Cadastro criado com sucesso');
   } catch (err) {
-    Alert.alert(
-      'Falha no cadastro',
-      err.response.data.error || 'Falha no cadastro, verifique seus dados',
-    );
+    Alert.alert('Falha no cadastro', 'Falha no cadastro, verifique seus dados');
 
     yield put(signFailure());
   }

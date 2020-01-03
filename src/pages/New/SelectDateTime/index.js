@@ -21,8 +21,6 @@ export default function SelectDateTime({navigation}) {
         params: {date: date.getTime()},
       });
 
-      console.log(response.data);
-
       setHours(response.data);
     }
     loadAvailable();

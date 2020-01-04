@@ -16,9 +16,10 @@ export default function SelectDateTime({navigation}) {
   const provider = navigation.getParam('provider');
 
   useEffect(() => {
+    const dateNow = date.setHours(0);
     async function loadAvailable() {
       const response = await api.get(`providers/${provider.id}/available`, {
-        params: {date: date.getTime()},
+        params: {date: dateNow},
       });
 
       setHours(response.data);

@@ -69,6 +69,7 @@ export default function Profile() {
             placeholder="Nome completo"
             returnKeyType="next"
             onSubmitEditing={() => emailRef.current.focus()}
+            blurOnSubmit={false}
           />
 
           <FormInput
@@ -82,6 +83,7 @@ export default function Profile() {
             ref={emailRef}
             returnKeyType="next"
             onSubmitEditing={() => oldPasswordRef.current.focus()}
+            blurOnSubmit={false}
           />
 
           <Separator />
@@ -95,6 +97,7 @@ export default function Profile() {
             ref={oldPasswordRef}
             returnKeyType="next"
             onSubmitEditing={() => passwordRef.current.focus()}
+            blurOnSubmit={false}
           />
 
           <FormInput
@@ -106,6 +109,7 @@ export default function Profile() {
             ref={passwordRef}
             returnKeyType="next"
             onSubmitEditing={() => passwordConfirmationRef.current.focus()}
+            blurOnSubmit={false}
           />
 
           <FormInput

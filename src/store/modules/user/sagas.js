@@ -20,10 +20,7 @@ export function* updateProfile({payload}) {
   } catch (err) {
     yield put(updateProfileFailure());
 
-    Alert.alert(
-      'Falha ao atualizar perfil',
-      err.response.data.error || 'Confira seus dados',
-    );
+    Alert.alert('Falha ao atualizar perfil', 'Confira seus dados');
   }
 }
 

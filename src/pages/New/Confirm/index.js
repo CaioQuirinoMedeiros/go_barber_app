@@ -1,7 +1,7 @@
 import React, {useMemo} from 'react';
 import {TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import {formatRelative, parseISO} from 'date-fns';
+import {format, parseISO} from 'date-fns';
 import pt from 'date-fns/locale/pt';
 
 import api from '../../../services/api';
@@ -15,19 +15,15 @@ export default function Confirm({navigation}) {
   const time = navigation.getParam('time');
 
   const dateFormatted = useMemo(
-    () => formatRelative(parseISO(time), new Date(), {locale: pt}),
+    () => format(parseISO(time), 'Pp', {locale: pt}),
     [time],
   );
 
   async function handleAddAppointment() {
-    console.log('provider:', provider);
-    console.log('date:', time);
-    const response = await api.post('appointments', {
+    await api.post('appointments', {
       provider_id: provider.id,
       date: time,
     });
-
-    console.log(response);
 
     navigation.navigate('Dashboard');
   }

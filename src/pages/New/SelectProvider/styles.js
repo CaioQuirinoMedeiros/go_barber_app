@@ -40,7 +40,7 @@ export const Name = styled.Text`
 
 export const Message = styled.Text`
   font-weight: bold;
-  font-size: 22;
+  font-size: 20px;
   color: #fff;
   opacity: 0.6;
   text-align: center;

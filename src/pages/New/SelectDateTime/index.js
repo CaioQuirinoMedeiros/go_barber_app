@@ -1,4 +1,5 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useMemo, useCallback} from 'react';
+import {format, parseISO, parse} from 'date-fns';
 import {TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
@@ -8,6 +9,10 @@ import Background from '../../../components/Background';
 import DateInput from '../../../components/DateInput';
 
 import {Container, HourList, Hour, Title} from './styles';
+
+const formatDate = stringDate => {
+  return format(parseISO(stringDate), 'HH:mm');
+};
 
 export default function SelectDateTime({navigation}) {
   const [date, setDate] = useState(new Date());
@@ -27,8 +32,8 @@ export default function SelectDateTime({navigation}) {
     loadAvailable();
   }, [date, provider.id]);
 
-  async function handleSelectHour(time) {
-    navigation.navigate('Confirm', {provider, time});
+  async function handleSelectHour({value}) {
+    navigation.navigate('Confirm', {provider, date: value});
   }
 
   return (
@@ -42,8 +47,8 @@ export default function SelectDateTime({navigation}) {
           renderItem={({item}) => (
             <Hour
               enabled={item.available}
-              onPress={() => handleSelectHour(item.value)}>
-              <Title>{item.time}</Title>
+              onPress={() => handleSelectHour(item)}>
+              <Title>{formatDate(item.value)}</Title>
             </Hour>
           )}
         />

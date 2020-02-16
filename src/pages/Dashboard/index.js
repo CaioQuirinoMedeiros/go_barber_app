@@ -7,15 +7,28 @@ import api from '../../services/api';
 import Background from '../../components/Background';
 import Appointment from '../../components/Appointment';
 
-import {Container, Title, List} from './styles';
+import {Container, Title, List, Message} from './styles';
 
 function Dashboard({isFocused}) {
   const [appointments, setAppointments] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   async function loadAppointments() {
-    const response = await api.get('appointments');
+    setLoading(true);
+    setError(null);
 
-    setAppointments(response.data);
+    try {
+      const response = await api.get('appointments');
+
+      setAppointments(response.data);
+    } catch (err) {
+      setError(
+        'Erro ao buscar agendamentos, clique aqui para tentar novamente',
+      );
+    } finally {
+      setLoading(false);
+    }
   }
 
   useEffect(() => {
@@ -33,13 +46,20 @@ function Dashboard({isFocused}) {
     <Background>
       <Container>
         <Title>Agendamentos</Title>
-        <List
-          data={appointments}
-          keyExtractor={item => String(item.id)}
-          renderItem={({item}) => (
-            <Appointment onCancel={() => handleCancel(item.id)} data={item} />
-          )}
-        />
+        {error ? (
+          <Message onPress={loadAppointments}>{error}</Message>
+        ) : (
+          <List
+            data={appointments}
+            keyExtractor={item => String(item.id)}
+            refreshing={loading}
+            onRefresh={loadAppointments}
+            ListEmptyComponent={<Message>Nenhum agendamento marcado</Message>}
+            renderItem={({item}) => (
+              <Appointment onCancel={() => handleCancel(item.id)} data={item} />
+            )}
+          />
+        )}
       </Container>
     </Background>
   );

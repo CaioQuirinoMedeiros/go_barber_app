@@ -32,4 +32,13 @@ export const Time = styled.Text`
 export const SubmitButton = styled(Button)`
   margin-top: 20px;
   padding: 0 20px;
+  width: 300px;
+`;
+
+export const ErrorMessage = styled.Text`
+  font-size: 18px;
+  color: #fff;
+  opacity: 0.7;
+  text-align: center;
+  margin-top: 20px;
 `;

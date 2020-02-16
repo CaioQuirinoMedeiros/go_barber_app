@@ -1,4 +1,4 @@
-import React, {useMemo} from 'react';
+import React, {useMemo, useState} from 'react';
 import {TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {format, parseISO} from 'date-fns';
@@ -8,24 +8,44 @@ import api from '../../../services/api';
 
 import Background from '../../../components/Background';
 
-import {Container, Avatar, Name, Time, SubmitButton} from './styles';
+import {
+  Container,
+  Avatar,
+  Name,
+  Time,
+  SubmitButton,
+  ErrorMessage,
+} from './styles';
 
 export default function Confirm({navigation}) {
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
   const provider = navigation.getParam('provider');
-  const time = navigation.getParam('time');
+  const date = navigation.getParam('date');
 
   const dateFormatted = useMemo(
-    () => format(parseISO(time), 'Pp', {locale: pt}),
-    [time],
+    () => format(parseISO(date), 'Pp', {locale: pt}),
+    [date],
   );
 
   async function handleAddAppointment() {
-    await api.post('appointments', {
-      provider_id: provider.id,
-      date: time,
-    });
+    setLoading(true);
+    setError(null);
 
-    navigation.navigate('Dashboard');
+    try {
+      await api.post('appointments', {
+        provider_id: provider.id,
+        date,
+      });
+
+      setLoading(false);
+      navigation.navigate('Dashboard');
+    } catch (err) {
+      setError('Erro ao marcar agendamento, tente mais tarde');
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
@@ -42,9 +62,10 @@ export default function Confirm({navigation}) {
         <Name>{provider.name}</Name>
         <Time>{dateFormatted}</Time>
 
-        <SubmitButton onPress={handleAddAppointment}>
+        <SubmitButton onPress={handleAddAppointment} loading={loading}>
           Confirmar Agendamento
         </SubmitButton>
+        {error && <ErrorMessage>{error}</ErrorMessage>}
       </Container>
     </Background>
   );

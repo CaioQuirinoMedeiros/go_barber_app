@@ -17,11 +17,21 @@ import {
 
 export default function SelectProvider({navigation}) {
   const [providers, setProviders] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   async function loadProviders() {
-    const response = await api.get('providers');
+    setError(null);
+    setLoading(true);
 
-    setProviders(response.data);
+    try {
+      const response = await api.get('providers');
+      setProviders(response.data);
+    } catch (err) {
+      setError('Erro ao buscar prestadores, clique aqui para tentar novamente');
+    } finally {
+      setLoading(false);
+    }
   }
 
   useEffect(() => {
@@ -35,24 +45,32 @@ export default function SelectProvider({navigation}) {
   return (
     <Background>
       <Container>
-        <ProvidersList
-          data={providers}
-          keyExtractor={provider => String(provider.id)}
-          ListEmptyComponent={EmptyList}
-          renderItem={({item: provider}) => (
-            <Provider
-              onPress={() => navigation.navigate('SelectDateTime', {provider})}>
-              <Avatar
-                source={{
-                  uri: provider.avatar
-                    ? provider.avatar.url
-                    : `https://api.adorable.io/avatar/50/${provider.name}`,
-                }}
-              />
-              <Name>{provider.name}</Name>
-            </Provider>
-          )}
-        />
+        {error ? (
+          <Message onPress={loadProviders}>{error}</Message>
+        ) : (
+          <ProvidersList
+            data={providers}
+            keyExtractor={provider => String(provider.id)}
+            ListEmptyComponent={EmptyList}
+            refreshing={loading}
+            onRefresh={loadProviders}
+            renderItem={({item: provider}) => (
+              <Provider
+                onPress={() =>
+                  navigation.navigate('SelectDateTime', {provider})
+                }>
+                <Avatar
+                  source={{
+                    uri: provider.avatar
+                      ? provider.avatar.url
+                      : `https://api.adorable.io/avatar/50/${provider.name}`,
+                  }}
+                />
+                <Name>{provider.name}</Name>
+              </Provider>
+            )}
+          />
+        )}
       </Container>
     </Background>
   );
